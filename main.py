@@ -8,6 +8,7 @@ import hashlib
 import time
 import matplotlib.pyplot as plt
 from tqdm import *
+
 dictBloc = {
 	"version"    : "1",
 	"prevBlock"  : "0000000000000b954f72baaf2fc64bc2e2f01d692d4de72986ea808f6e99813f",
@@ -53,18 +54,6 @@ def minage(dictBloc, difficulty, verbose=False):
 	return tempsFin - tempsDebut
 
 
-# def testPerfMinage(difficulty):
-# 	dictBlocs = loadGeneratedBlocs()
-# 	temps = []
-# 	for dictBloc in dictBlocs:
-# 		temps.append(minage(dictBloc, difficulty))
-
-# 	return temps
-
-def testPerfMinage(dictBloc, difficulty):
-	temps = minage(dictBloc, difficulty)
-
-	return temps
 
 def testPerfMinageOnGenerateBlocs(numberOfBlocs, difficulty):
 	dictBlocExample = {
@@ -80,7 +69,7 @@ def testPerfMinageOnGenerateBlocs(numberOfBlocs, difficulty):
 	for k in tqdm(range(numberOfBlocs)):
 		tmpBloc = dictBlocExample
 		tmpBloc["prevBlock"] = SHA256(str(k))
-		temps.append(testPerfMinage(tmpBloc, difficulty))
+		temps.append(minage(tmpBloc, difficulty))
 
 	return temps
 
@@ -92,13 +81,14 @@ def tempsMoyen(times):
 
 
 numberOfBlocs = 50
-
-for difficulty in range(6,8):
+TimesDifficulty = []
+difficulties = range(1,5)
+"""Afficher les graphes pour 50 blocs"""
+for difficulty in difficulties:
 	times = testPerfMinageOnGenerateBlocs(numberOfBlocs, difficulty)
+	TimesDifficulty.append(times)
 	plt.plot(times, "ro")
 	plt.title('Temps moyen nécessaire pour miner des blocs de difficulté {0} : {1}'.format(difficulty, round(tempsMoyen(times), 6)))
 	plt.xlabel('blocs')
 	plt.ylabel('temps')
 	plt.show()
-
-print("fin des tests de performances")
