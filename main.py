@@ -79,13 +79,18 @@ def tempsMoyen(times):
 		somme += time
 	return somme / len(times)
 
-
+################################################################################################################################
+################################################################################################################################
 numberOfBlocs = 50
-TimesDifficulty = []
 difficulties = range(1,5)
+TimesDifficulty = []
+
+
 """Afficher les graphes pour 50 blocs"""
 for difficulty in difficulties:
+	print("Calcul de la valeur de mounce des {0} blocs de test avec comme difficulté : {1}".format(numberOfBlocs, difficulty))
 	times = testPerfMinageOnGenerateBlocs(numberOfBlocs, difficulty)
+	print("\n")
 	TimesDifficulty.append(times)
 	plt.plot(times, "ro")
 	plt.title('Temps moyen nécessaire pour miner des blocs de difficulté {0} : {1}'.format(difficulty, round(tempsMoyen(times), 6)))
